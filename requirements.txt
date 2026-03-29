@@ -1,0 +1,11 @@
+# Telegram Bot Library
+python-telegram-bot==21.9
+
+# Environment Variables
+python-dotenv==1.0.1
+
+# Logging
+rich==13.9.4
+
+# Async Support (for Python < 3.11, included in stdlib for 3.11+)
+# No additional async dependencies needed for Python 3.11+

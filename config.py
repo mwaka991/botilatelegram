@@ -1,0 +1,221 @@
+"""
+Configuration Module for Telegram Channel Bot
+
+This module handles all configuration settings for the bot,
+loading values from environment variables with sensible defaults.
+"""
+
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# ============================================
+# Load Environment Variables
+# ============================================
+
+# Get the directory where this script is located
+BASE_DIR = Path(__file__).parent.absolute()
+
+# Load .env file if it exists
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
+
+
+# ============================================
+# Bot Configuration Class
+# ============================================
+
+class Config:
+    """
+    Configuration class for the Telegram Bot.
+    All settings are loaded from environment variables.
+    """
+    
+    # --- Required Settings ---
+    BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
+    OWNER_USER_ID: int = int(os.getenv('OWNER_USER_ID', '0'))
+    CHANNEL_ID: str = os.getenv('CHANNEL_ID', '')
+    CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
+    SHARE_LINK: str = os.getenv('SHARE_LINK', '')
+    
+    # --- Optional Settings ---
+    ENVIRONMENT: str = os.getenv('ENVIRONMENT', 'production')
+    LOG_LEVEL: str = os.getenv('LOG_LEVEL', 'INFO')
+    
+    # --- Anti-Spam Settings ---
+    MAX_MESSAGES_PER_MINUTE: int = int(os.getenv('MAX_MESSAGES_PER_MINUTE', '5'))
+    REMOVE_CAPTIONS: bool = os.getenv('REMOVE_CAPTIONS', 'false').lower() == 'true'
+    
+    # ============================================
+    # Validation Methods
+    # ============================================
+    
+    @classmethod
+    def validate(cls) -> bool:
+        """
+        Validate that all required configuration is present.
+        
+        Returns:
+            bool: True if configuration is valid, False otherwise
+        """
+        required_fields = [
+            ('BOT_TOKEN', cls.BOT_TOKEN),
+            ('OWNER_USER_ID', cls.OWNER_USER_ID),
+            ('SHARE_LINK', cls.SHARE_LINK),
+        ]
+        
+        # Check that at least one of CHANNEL_ID or CHANNEL_USERNAME is set
+        if not cls.CHANNEL_ID and not cls.CHANNEL_USERNAME:
+            print("❌ ERROR: Either CHANNEL_ID or CHANNEL_USERNAME must be set!")
+            return False
+        
+        missing = []
+        for name, value in required_fields:
+            if not value or value == '0':
+                missing.append(name)
+        
+        if missing:
+            print(f"❌ ERROR: Missing required configuration: {', '.join(missing)}")
+            return False
+        
+        return True
+    
+    @classmethod
+    def get_target_channel(cls) -> str:
+        """
+        Get the target channel identifier.
+        Prefers CHANNEL_ID over CHANNEL_USERNAME if both are set.
+        
+        Returns:
+            str: Channel ID or username to post to
+        """
+        return cls.CHANNEL_ID if cls.CHANNEL_ID else cls.CHANNEL_USERNAME
+    
+    @classmethod
+    def is_owner(cls, user_id: int) -> bool:
+        """
+        Check if a user is the bot owner.
+        
+        Args:
+            user_id: Telegram user ID to check
+            
+        Returns:
+            bool: True if user is the owner, False otherwise
+        """
+        return user_id == cls.OWNER_USER_ID
+    
+    @classmethod
+    def is_development(cls) -> bool:
+        """
+        Check if running in development mode.
+        
+        Returns:
+            bool: True if in development mode
+        """
+        return cls.ENVIRONMENT.lower() == 'development'
+
+
+# ============================================
+# Bot Messages
+# ============================================
+
+class Messages:
+    """
+    Static messages used by the bot.
+    Edit these to customize the bot's responses.
+    """
+    
+    # Welcome message sent when user starts the bot
+    WELCOME = """
+👋 <b>Welcome to the Channel Bot!</b>
+
+I'm here to help you stay connected with our amazing channel.
+
+📢 <b>Join our channel:</b> {channel_link}
+
+<b>Available Commands:</b>
+• /start - Show this welcome message
+• /help - Get help and instructions
+• /channel - Get the channel link
+
+Feel free to explore and join our community! 🎉
+"""
+    
+    # Help message
+    HELP = """
+❓ <b>Help & Instructions</b>
+
+<b>For Channel Members:</b>
+• Use /channel to get the channel link
+• Click "Join Channel" button to join
+
+<b>For Bot Owner:</b>
+• Send any message, photo, video, or document to post it to the channel
+• The bot will automatically forward your content
+
+<b>Need Support?</b>
+Contact the bot administrator for assistance.
+"""
+    
+    # Channel promotion message
+    CHANNEL_PROMO = """
+📢 <b>Join Our Official Channel!</b>
+
+Stay updated with the latest content, news, and announcements.
+
+👉 {channel_link}
+
+<i>Click the button below to join now!</i>
+"""
+    
+    # Message sent when bot is added to a group
+    GROUP_WELCOME = """
+👋 <b>Hello everyone!</b>
+
+Thanks for adding me to this group!
+
+I'm here to share an amazing channel with you all:
+📢 {channel_link}
+
+Feel free to join and stay updated!
+"""
+    
+    # Unauthorized access message
+    UNAUTHORIZED = """
+⛔ <b>Access Denied</b>
+
+You are not authorized to use this feature.
+This bot is restricted to the owner only.
+"""
+    
+    # Rate limit message
+    RATE_LIMITED = """
+⚠️ <b>Slow Down!</b>
+
+You're sending messages too quickly. Please wait a moment before trying again.
+"""
+    
+    # Success message after posting
+    POST_SUCCESS = "✅ Content posted to channel successfully!"
+    
+    # Error message
+    ERROR = "❌ An error occurred. Please try again later or contact support."
+
+
+# ============================================
+# Initialize Configuration
+# ============================================
+
+if __name__ == "__main__":
+    # Test configuration loading
+    print("🔧 Testing Configuration...")
+    
+    if Config.validate():
+        print("✅ Configuration is valid!")
+        print(f"   Target Channel: {Config.get_target_channel()}")
+        print(f"   Owner ID: {Config.OWNER_USER_ID}")
+        print(f"   Environment: {Config.ENVIRONMENT}")
+    else:
+        print("❌ Configuration validation failed!")
+        exit(1)
