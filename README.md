@@ -65,7 +65,7 @@ cp .env.example .env
 # Required Settings
 BOT_TOKEN=your_bot_token_here
 OWNER_USER_ID=your_user_id_here
-CHANNEL_ID=-1001234567890
+CHANNELS=-1001234567890,-1009876543210
 SHARE_LINK=https://t.me/yourchannel
 ```
 
@@ -86,8 +86,8 @@ Get your Telegram User ID:
 2. It will reply with your ID (e.g., `123456789`)
 3. Copy the number
 
-#### 3. CHANNEL_ID
-Get your Channel ID:
+#### 3. CHANNELS
+Get your channel IDs or usernames:
 
 **Method 1 - Using a Bot:**
 1. Add [@getidsbot](https://t.me/getidsbot) to your channel as administrator
@@ -100,8 +100,13 @@ Get your Channel ID:
 2. Look at the URL: `https://web.telegram.org/a/#-1001234567890`
 3. The number after `#` is your channel ID
 
-#### 4. CHANNEL_USERNAME (Alternative)
-Instead of CHANNEL_ID, you can use your channel username:
+You can configure one or more target channels by separating values with commas:
+```env
+CHANNELS=-1001234567890,-1009876543210
+```
+
+#### 4. CHANNEL_USERNAME (Optional)
+Instead of channel IDs, you can optionally use a channel username:
 ```env
 CHANNEL_USERNAME=@yourchannel
 ```

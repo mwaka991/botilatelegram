@@ -16,6 +16,8 @@ from rich.logging import RichHandler
 from rich.panel import Panel
 from rich.text import Text
 
+from config import Config
+
 # ============================================
 # Initialize Rich Console
 # ============================================
@@ -35,7 +37,7 @@ log_file = LOGS_DIR / f"bot_{datetime.now().strftime('%Y-%m-%d')}.log"
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=getattr(logging, Config.LOG_LEVEL.upper(), logging.INFO),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         # Rich console handler for beautiful terminal output

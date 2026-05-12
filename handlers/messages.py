@@ -157,7 +157,8 @@ async def post_to_all_channels(
     success_count = 0
     failed_channels = []
 
-    for channel_id in Config.CHANNELS:
+    target_channels = Config.get_target_channels()
+    for channel_id in target_channels:
         success = await post_content_to_single_channel(
             context, content_type, channel_id, message
         )
@@ -170,7 +171,7 @@ async def post_to_all_channels(
     # Send summary to admin
     if failed_channels:
         await message.reply_text(
-            f"✅ Posted to {success_count}/{len(Config.CHANNELS)} channels\n"
+            f"✅ Posted to {success_count}/{len(target_channels)} channels\n"
             f"❌ Failed: {', '.join(failed_channels)}",
             parse_mode='HTML',
         )
