@@ -23,6 +23,10 @@ from .keyboards import (
     format_channel_promo,
     format_group_welcome
 )
+from .text_utils import (
+    remove_links,
+    has_links
+)
 
 __all__ = [
     'get_logger', 
@@ -38,5 +42,7 @@ __all__ = [
     'get_promotion_keyboard',
     'format_welcome_message',
     'format_channel_promo',
-    'format_group_welcome'
+    'format_group_welcome',
+    'remove_links',
+    'has_links'
 ]

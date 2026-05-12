@@ -181,13 +181,10 @@ def owner_only(handler_func):
         if not user_id or not Config.is_owner(user_id):
             # Send unauthorized message
             if update.message:
-                await update.message.reply_text(
-                    Messages.UNAUTHORIZED,
-                    parse_mode='HTML'
-                )
+                await update.message.reply_text(Messages.UNAUTHORIZED)
             elif update.callback_query:
                 await update.callback_query.answer(
-                    "You are not authorized!",
+                    Messages.UNAUTHORIZED,
                     show_alert=True
                 )
             

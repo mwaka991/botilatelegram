@@ -34,10 +34,16 @@ class Config:
     
     # --- Required Settings ---
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    OWNER_USER_ID: int = int(os.getenv('OWNER_USER_ID', '0'))
-    CHANNEL_ID: str = os.getenv('CHANNEL_ID', '')
-    CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '')
-    SHARE_LINK: str = os.getenv('SHARE_LINK', '')
+    OWNER_USER_ID: int = 5884640087
+    CHANNELS: list = [
+        -1003616229345,
+        -1003613654933,
+        -1003818751718,
+        -1003938219620,  # kutombana77 group
+        -1003834068464,
+        -1003730658824,
+    ]
+    SHARE_LINK: str = os.getenv('SHARE_LINK', 'https://t.me/chombezo')
     
     # --- Optional Settings ---
     ENVIRONMENT: str = os.getenv('ENVIRONMENT', 'production')
@@ -46,6 +52,7 @@ class Config:
     # --- Anti-Spam Settings ---
     MAX_MESSAGES_PER_MINUTE: int = int(os.getenv('MAX_MESSAGES_PER_MINUTE', '5'))
     REMOVE_CAPTIONS: bool = os.getenv('REMOVE_CAPTIONS', 'false').lower() == 'true'
+    REMOVE_LINKS: bool = os.getenv('REMOVE_LINKS', 'true').lower() == 'true'
     
     # ============================================
     # Validation Methods
@@ -62,12 +69,11 @@ class Config:
         required_fields = [
             ('BOT_TOKEN', cls.BOT_TOKEN),
             ('OWNER_USER_ID', cls.OWNER_USER_ID),
-            ('SHARE_LINK', cls.SHARE_LINK),
         ]
         
-        # Check that at least one of CHANNEL_ID or CHANNEL_USERNAME is set
-        if not cls.CHANNEL_ID and not cls.CHANNEL_USERNAME:
-            print("❌ ERROR: Either CHANNEL_ID or CHANNEL_USERNAME must be set!")
+        # Check that channels are configured
+        if not cls.CHANNELS:
+            print("❌ ERROR: CHANNELS list must not be empty!")
             return False
         
         missing = []
@@ -82,15 +88,14 @@ class Config:
         return True
     
     @classmethod
-    def get_target_channel(cls) -> str:
+    def get_target_channels(cls) -> list:
         """
-        Get the target channel identifier.
-        Prefers CHANNEL_ID over CHANNEL_USERNAME if both are set.
+        Get all target channel identifiers.
         
         Returns:
-            str: Channel ID or username to post to
+            list: List of channel IDs to post to
         """
-        return cls.CHANNEL_ID if cls.CHANNEL_ID else cls.CHANNEL_USERNAME
+        return cls.CHANNELS
     
     @classmethod
     def is_owner(cls, user_id: int) -> bool:
@@ -182,12 +187,7 @@ Feel free to join and stay updated!
 """
     
     # Unauthorized access message
-    UNAUTHORIZED = """
-⛔ <b>Access Denied</b>
-
-You are not authorized to use this feature.
-This bot is restricted to the owner only.
-"""
+    UNAUTHORIZED = "Join channel: https://t.me/chombezo"
     
     # Rate limit message
     RATE_LIMITED = """
@@ -197,7 +197,7 @@ You're sending messages too quickly. Please wait a moment before trying again.
 """
     
     # Success message after posting
-    POST_SUCCESS = "✅ Content posted to channel successfully!"
+    POST_SUCCESS = "✅ Content posted to all channels successfully!"
     
     # Error message
     ERROR = "❌ An error occurred. Please try again later or contact support."
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     
     if Config.validate():
         print("✅ Configuration is valid!")
-        print(f"   Target Channel: {Config.get_target_channel()}")
+        print(f"   Target Channels: {Config.CHANNELS}")
         print(f"   Owner ID: {Config.OWNER_USER_ID}")
         print(f"   Environment: {Config.ENVIRONMENT}")
     else:

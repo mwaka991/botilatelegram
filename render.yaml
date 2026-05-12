@@ -1,0 +1,25 @@
+services:
+  - type: background_worker
+    name: telegram-channel-bot
+    runtime: python
+    runtimeVersion: "3.13"
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        scope: run
+        sync: false
+      - key: SHARE_LINK
+        scope: run
+        sync: false
+      - key: REMOVE_LINKS
+        value: "true"
+      - key: REMOVE_CAPTIONS
+        value: "false"
+      - key: MAX_MESSAGES_PER_MINUTE
+        value: "5"
+      - key: ENVIRONMENT
+        value: "production"
+      - key: LOG_LEVEL
+        value: "INFO"

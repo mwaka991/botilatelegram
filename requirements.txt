@@ -1,11 +1,35 @@
-# Telegram Bot Library
+# ============================================
+# Telegram Bot Framework
+# ============================================
 python-telegram-bot==21.9
 
-# Environment Variables
+# ============================================
+# Environment Configuration
+# ============================================
 python-dotenv==1.0.1
 
-# Logging
+# ============================================
+# Logging and Formatting
+# ============================================
 rich==13.9.4
 
-# Async Support (for Python < 3.11, included in stdlib for 3.11+)
-# No additional async dependencies needed for Python 3.11+
+# ============================================
+# HTTP Client (for telegram-bot)
+# ============================================
+httpx==0.27.0
+
+# ============================================
+# Async Framework (included in Python 3.11+)
+# ============================================
+aiohttp>=3.9.0
+
+# ============================================
+# Production Server (optional, for monitoring)
+# ============================================
+# Uncomment if you want basic health checks
+# flask==3.0.0
+
+# ============================================
+# Async Support
+# ============================================
+# No additional async dependencies needed for Python 3.13

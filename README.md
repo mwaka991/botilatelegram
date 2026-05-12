@@ -11,8 +11,8 @@ A production-ready Telegram bot that automatically posts content from the owner 
 - 📢 **Channel Promotion**: Automatically shares channel link with users and groups
 - 🔘 **Inline Buttons**: "Join Channel" buttons for easy access
 - 📝 **Comprehensive Logging**: All events and errors are logged
-- ⚙️ **Configurable**: Environment-based configuration with `.env` file
-
+- ⚙️ **Configurable**: Environment-based configuration with `.env` file- 🌐 **Cloud Ready**: Easily deploy to Render.com, Heroku, or other cloud platforms
+- 🔗 **Link Removal**: Automatically strips all links from content before posting
 ## 📋 Requirements
 
 - Python 3.9 or higher
@@ -254,6 +254,34 @@ To update the bot:
 2. Pull/download new files
 3. Reinstall dependencies if `requirements.txt` changed
 4. Start the bot again
+
+## 🌐 Cloud Deployment
+
+### Render.com (Recommended)
+
+Deploy to [Render.com](https://render.com) for free 24/7 hosting:
+
+1. Push your code to GitHub
+2. Create a new Background Worker on Render
+3. Set environment variables:
+   - `BOT_TOKEN` - Your Telegram bot token
+   - `SHARE_LINK` - Your channel URL
+4. Render will automatically build and run your bot
+
+**For detailed instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+### Features on Render
+✅ Free tier available  
+✅ Auto-restart on crashes  
+✅ Built-in logging dashboard  
+✅ Easy environment variable management  
+✅ No credit card required to start  
+
+### Other Deployment Options
+- Heroku (paid after free tier)
+- AWS Lambda (serverless)
+- DigitalOcean (low-cost VPS)
+- Your own server/VPS
 
 ## 📄 License
 
