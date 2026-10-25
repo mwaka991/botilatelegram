@@ -114,7 +114,7 @@ def setup_bot() -> Application:
     """
     # Validate configuration
     if not Config.validate():
-        print("❌ Configuration validation failed. Please check your .env file.")
+        print("❌ Configuration validation failed. Please check config.py.")
         sys.exit(1)
     
     # Create application

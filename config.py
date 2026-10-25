@@ -7,24 +7,29 @@ loading values from environment variables with sensible defaults.
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-
-# ============================================
-# Load Environment Variables
-# ============================================
-
-# Get the directory where this script is located
-BASE_DIR = Path(__file__).parent.absolute()
-
-# Load .env file if it exists
-env_path = BASE_DIR / '.env'
-if env_path.exists():
-    load_dotenv(env_path)
-
 
 # ============================================
 # Helpers
 # ============================================
+
+def load_env_file() -> None:
+    """Load local environment variables from the project .env file."""
+    env_path = Path(__file__).resolve().parent / '.env'
+    if not env_path.exists():
+        return
+
+    for line in env_path.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+
+        key, value = line.split('=', 1)
+        key = key.strip()
+        value = value.strip().strip("'\"")
+        os.environ.setdefault(key, value)
+
+
+load_env_file()
 
 def parse_channel_list(raw_channel_list: str) -> list:
     """
@@ -55,24 +60,32 @@ def parse_channel_list(raw_channel_list: str) -> list:
 class Config:
     """
     Configuration class for the Telegram Bot.
-    All settings are loaded from environment variables.
+    Deployment configuration is kept in code for this private repository.
     """
     
     # --- Required Settings ---
     BOT_TOKEN: str = os.getenv('BOT_TOKEN', '')
-    OWNER_USER_ID: int = int(os.getenv('OWNER_USER_ID', '0') or '0')
-    CHANNELS: list = parse_channel_list(os.getenv('CHANNELS', ''))
-    CHANNEL_USERNAME: str = os.getenv('CHANNEL_USERNAME', '').strip()
-    SHARE_LINK: str = os.getenv('SHARE_LINK', '')
+    OWNER_USER_ID: int = 5884640087
+    CHANNELS: list = parse_channel_list(
+        '-1003997176821,-1003968885278,-1003775651588,-1003938219620,'
+        '-1003616229345,-1003906569089,-1004491010842,-1004472722181,'
+        '-1004305074434'
+    )
+    CHANNEL_USERNAME: str = ''
+    SHARE_LINK: str = 'https://t.me/Chombezobot'
     
     # --- Optional Settings ---
-    ENVIRONMENT: str = os.getenv('ENVIRONMENT', 'production')
-    LOG_LEVEL: str = os.getenv('LOG_LEVEL', 'INFO')
+    ENVIRONMENT: str = 'production'
+    LOG_LEVEL: str = 'INFO'
     
     # --- Anti-Spam Settings ---
-    MAX_MESSAGES_PER_MINUTE: int = int(os.getenv('MAX_MESSAGES_PER_MINUTE', '5'))
-    REMOVE_CAPTIONS: bool = os.getenv('REMOVE_CAPTIONS', 'false').lower() == 'true'
-    REMOVE_LINKS: bool = os.getenv('REMOVE_LINKS', 'true').lower() == 'true'
+    MAX_MESSAGES_PER_MINUTE: int = 5
+    REMOVE_CAPTIONS: bool = True
+    REMOVE_LINKS: bool = True
+    MEDIA_CAPTION: str = (
+        'enjoy video zaidi kupitia chombezo.online '
+        'na utamu.chombezo.online'
+    )
     
     # ============================================
     # Validation Methods

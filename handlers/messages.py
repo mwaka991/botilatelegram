@@ -33,6 +33,7 @@ async def post_content_to_single_channel(
     content_type: str,
     channel_id: int,
     message,
+    sender_id: int = None,
 ) -> bool:
     """
     Post content to a single target channel.
@@ -42,6 +43,7 @@ async def post_content_to_single_channel(
         content_type: Type of content being posted
         channel_id: Target channel ID
         message: The original message object
+        sender_id: Telegram user ID of the sender
 
     Returns:
         bool: True if posted successfully, False otherwise
@@ -65,14 +67,7 @@ async def post_content_to_single_channel(
                 log_error("No photo found in message", None)
                 return False
             photo = message.photo[-1]
-            # Remove links from caption if enabled
-            caption = message.caption
-            if caption and not Config.REMOVE_CAPTIONS and Config.REMOVE_LINKS:
-                caption = remove_links(caption)
-            elif not Config.REMOVE_CAPTIONS:
-                caption = caption
-            else:
-                caption = None
+            caption = Config.MEDIA_CAPTION
 
             await context.bot.send_photo(
                 chat_id=channel_id,
@@ -82,14 +77,7 @@ async def post_content_to_single_channel(
             )
 
         elif content_type == 'video':
-            # Remove links from caption if enabled
-            caption = message.caption
-            if caption and not Config.REMOVE_CAPTIONS and Config.REMOVE_LINKS:
-                caption = remove_links(caption)
-            elif not Config.REMOVE_CAPTIONS:
-                caption = caption
-            else:
-                caption = None
+            caption = Config.MEDIA_CAPTION
 
             await context.bot.send_video(
                 chat_id=channel_id,
@@ -100,14 +88,7 @@ async def post_content_to_single_channel(
             )
 
         elif content_type == 'document':
-            # Remove links from caption if enabled
-            caption = message.caption
-            if caption and not Config.REMOVE_CAPTIONS and Config.REMOVE_LINKS:
-                caption = remove_links(caption)
-            elif not Config.REMOVE_CAPTIONS:
-                caption = caption
-            else:
-                caption = None
+            caption = Config.MEDIA_CAPTION
 
             await context.bot.send_document(
                 chat_id=channel_id,
@@ -160,7 +141,11 @@ async def post_to_all_channels(
     target_channels = Config.get_target_channels()
     for channel_id in target_channels:
         success = await post_content_to_single_channel(
-            context, content_type, channel_id, message
+            context,
+            content_type,
+            channel_id,
+            message,
+            sender_id=user_id,
         )
         if success:
             success_count += 1
