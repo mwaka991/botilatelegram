@@ -130,6 +130,8 @@ MAX_MESSAGES_PER_MINUTE=5
 LOG_LEVEL=INFO
 ```
 
+Videos always use the promotional caption configured in `config.py`; it replaces any caption sent with the video and is not affected by `REMOVE_CAPTIONS` or `REMOVE_LINKS`.
+
 ## 🎮 Usage
 
 ### Running the Bot

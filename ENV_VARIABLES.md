@@ -8,14 +8,14 @@ These MUST be set in Render for the bot to work:
 
 ### BOT_TOKEN
 - **Description**: Telegram Bot API token from @BotFather
-- **Format**: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`
+- **Format**: A token provided by @BotFather
 - **Required**: YES
 - **Scope**: Keep secret! 🔐
 - **Where to get**: https://t.me/botfather
 
 **Example**:
 ```
-BOT_TOKEN=5123456789:ABCdefGHIjklMNOpqrsTUVwxyz_ExampleToken
+BOT_TOKEN=your_bot_token_here
 ```
 
 ### SHARE_LINK
@@ -85,7 +85,7 @@ REMOVE_LINKS=true
 - **Description**: Remove all captions from media before posting
 - **Options**: `true` or `false`
 - **Default**: `false`
-- **Impact**: Photos, videos, documents are posted without captions
+- **Impact**: Original photo and document captions are removed when enabled. Videos always use the promotional caption configured as `Config.VIDEO_CAPTION` in `config.py`, replacing any caption sent with the video; this setting does not affect it.
 
 **Example**:
 ```

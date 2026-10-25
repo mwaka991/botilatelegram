@@ -73,6 +73,10 @@ class Config:
     MAX_MESSAGES_PER_MINUTE: int = int(os.getenv('MAX_MESSAGES_PER_MINUTE', '5'))
     REMOVE_CAPTIONS: bool = os.getenv('REMOVE_CAPTIONS', 'false').lower() == 'true'
     REMOVE_LINKS: bool = os.getenv('REMOVE_LINKS', 'true').lower() == 'true'
+    VIDEO_CAPTION: str = (
+        "Angalia video zaidi chombezo.online ,,,,, wakubwa.chombezo.online "
+        ",,,, wakubwa.chombezo.online ''' wakubwa.chombezo.online"
+    )
     
     # ============================================
     # Validation Methods

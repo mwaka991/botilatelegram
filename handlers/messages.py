@@ -82,20 +82,10 @@ async def post_content_to_single_channel(
             )
 
         elif content_type == 'video':
-            # Remove links from caption if enabled
-            caption = message.caption
-            if caption and not Config.REMOVE_CAPTIONS and Config.REMOVE_LINKS:
-                caption = remove_links(caption)
-            elif not Config.REMOVE_CAPTIONS:
-                caption = caption
-            else:
-                caption = None
-
             await context.bot.send_video(
                 chat_id=channel_id,
                 video=message.video.file_id,
-                caption=caption,
-                parse_mode='HTML' if caption and message.caption_html else None,
+                caption=Config.VIDEO_CAPTION,
                 supports_streaming=True,
             )
 
