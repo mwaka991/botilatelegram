@@ -23,6 +23,10 @@ A production-ready Telegram bot that automatically posts content from the owner 
 
 ## 🚀 Installation
 
+### Production deployment
+
+For a persistent Ubuntu or Debian VPS deployment with systemd, follow the [VPS deployment guide](VPS_DEPLOYMENT.md). For Render, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ### Step 1: Clone or Download the Project
 
 ```bash

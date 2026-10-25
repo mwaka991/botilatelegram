@@ -104,6 +104,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
+!.env.example
 .venv
 env/
 venv/
@@ -150,5 +152,4 @@ logs/
 *.session
 *.session-journal
 
-# Configuration with secrets (keep .env.example)
-!.env.example
+# Configuration with secrets
