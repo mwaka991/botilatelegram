@@ -6,6 +6,7 @@ A production-ready Telegram bot that automatically posts content from the owner 
 
 - 📨 **Auto-Posting**: Send content to the bot inbox and it automatically posts to your channel
 - 📸 **Media Support**: Handles text, photos, videos, and documents
+- ⏰ **Scheduled Promotion**: Sends a promotional text to every configured channel every 4 hours
 - 🔒 **Owner-Only Access**: Only the bot owner can post content
 - 🛡️ **Anti-Spam**: Rate limiting prevents abuse from random users
 - 📢 **Channel Promotion**: Automatically shares channel link with users and groups
@@ -161,6 +162,8 @@ Bot is starting up...
    - Videos
    - Documents
 3. The bot automatically posts it to your channel!
+
+The bot also sends the configured promotional text to all target channels every four hours, starting four hours after it launches.
 
 ### Available Commands
 

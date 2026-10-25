@@ -1,7 +1,7 @@
 # ============================================
 # Telegram Bot Framework
 # ============================================
-python-telegram-bot==21.9
+python-telegram-bot[job-queue]==21.9
 
 # ============================================
 # Environment Configuration

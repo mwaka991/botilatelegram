@@ -77,6 +77,11 @@ class Config:
         "Angalia video zaidi chombezo.online ,,,,, wakubwa.chombezo.online "
         ",,,, wakubwa.chombezo.online ''' wakubwa.chombezo.online"
     )
+    SCHEDULED_PROMO_TEXT: str = (
+        "tazama video zaidi kupitia chombezo.online                          "
+        ",,, wakubwa.chombezo.online ,,, wakubwa.chombezo.online   "
+        ",,,, wakubwa.chombezo.online  \"\"\"'"
+    )
     
     # ============================================
     # Validation Methods

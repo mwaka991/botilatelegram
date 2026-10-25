@@ -47,6 +47,7 @@ from handlers import (
 
 # Import utilities
 from utils import get_logger, log_startup, log_shutdown, log_error
+from utils.logger import log_event
 
 # Import middleware
 from middleware import AntiSpamMiddleware
@@ -57,6 +58,7 @@ from middleware import AntiSpamMiddleware
 # ============================================
 
 application: Application = None
+PROMO_INTERVAL_SECONDS = 4 * 60 * 60
 
 
 # ============================================
@@ -91,6 +93,22 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             pass  # Ignore errors in error handler
 
 
+async def send_scheduled_promo(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send the promotional text to every configured channel."""
+    for channel_id in Config.get_target_channels():
+        try:
+            await context.bot.send_message(
+                chat_id=channel_id,
+                text=Config.SCHEDULED_PROMO_TEXT,
+            )
+            log_event('scheduled_promo_sent', f"Promotional text sent to {channel_id}")
+        except Exception as e:
+            log_error(
+                f"Failed to send scheduled promotional text to channel {channel_id}",
+                exception=e,
+            )
+
+
 # ============================================
 # Shutdown Handler
 # ============================================
@@ -119,7 +137,19 @@ def setup_bot() -> Application:
     
     # Create application
     app = Application.builder().token(Config.BOT_TOKEN).build()
-    
+
+    job_queue = app.job_queue
+    if job_queue is None:
+        raise RuntimeError(
+            "JobQueue is unavailable. Install python-telegram-bot with the job-queue extra."
+        )
+    job_queue.run_repeating(
+        send_scheduled_promo,
+        interval=PROMO_INTERVAL_SECONDS,
+        first=PROMO_INTERVAL_SECONDS,
+        name='four_hour_channel_promo',
+    )
+
     # Initialize anti-spam middleware in bot data
     app.bot_data['antispam'] = AntiSpamMiddleware()
     
